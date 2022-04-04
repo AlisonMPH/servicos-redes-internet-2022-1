@@ -37,7 +37,7 @@ def addSwitch(net=None, name=None):
 
 def setIP(router, iface, ip):
     if iface and ip:
-        router.cmd(f"ifconfig {iface} {ip} up"
+        router.cmd(f"ifconfig {iface} {ip} up")
 
 def topology(remote_controller):
     "Create a network."

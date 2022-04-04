@@ -88,7 +88,8 @@ def topology(remote_controller):
     addRoute(router=h1B, route="default via 192.0.3.254")
     addRoute(router=h1C, route="default via 192.0.4.254")
 
-    setIP(router=r1, iface="r1-eth1", ip="10.10.102.1/24")
+    setIP(router=r1, iface="r1-eth1", ip="10.10.100.1/24")
+    setIP(router=r1, iface="r1-eth2", ip="10.10.102.1/24")
     setIP(router=r2, iface="r2-eth1", ip="10.10.100.2/24")
     setIP(router=r2, iface="r2-eth2", ip="10.10.101.1/24")
 

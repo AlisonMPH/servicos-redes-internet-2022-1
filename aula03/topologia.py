@@ -86,13 +86,13 @@ def topology(remote_controller):
     addRoute(h1B, "default", "192.0.3.254")
     addRoute(h1C, "default", "192.0.4.254")
 
-    setIP(r1, "2", ip="10.10.100.1/24")
-    setIP(r1, "3", ip="10.10.102.1/24")
-    setIP(r2, "2", ip="10.10.100.2/24")
-    setIP(r2, "3", ip="10.10.101.1/24")
+    setIP(r1, 2, ip="10.10.100.1/24")
+    setIP(r1, 3, ip="10.10.102.1/24")
+    setIP(r2, 2, ip="10.10.100.2/24")
+    setIP(r2, 3, ip="10.10.101.1/24")
 
-    setIP(r3, "2", ip="10.10.102.2/24")
-    setIP(r3, "3", ip="10.10.101.2/24")
+    setIP(r3, 2, ip="10.10.102.2/24")
+    setIP(r3, 3, ip="10.10.101.2/24")
 
     info("*** Running CLI\n")
 

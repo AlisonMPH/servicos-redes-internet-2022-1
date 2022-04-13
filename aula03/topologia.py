@@ -31,6 +31,7 @@ def addRoute(host, src, dest):
 
 def setIP(host, if_number=None, ip=None):
     if if_number and ip:
+        if_number = if_number - 1
         host.cmd(f"ifconfig {host.name}-eth{if_number} {ip} up")
 
 
@@ -85,13 +86,13 @@ def topology(remote_controller):
     addRoute(h1B, "default", "192.0.3.254")
     addRoute(h1C, "default", "192.0.4.254")
 
-    setIP(r1, "1", ip="10.10.100.1/24")
-    setIP(r1, "2", ip="10.10.102.1/24")
-    setIP(r2, "1", ip="10.10.100.2/24")
-    setIP(r2, "2", ip="10.10.101.1/24")
+    setIP(r1, "2", ip="10.10.100.1/24")
+    setIP(r1, "3", ip="10.10.102.1/24")
+    setIP(r2, "2", ip="10.10.100.2/24")
+    setIP(r2, "3", ip="10.10.101.1/24")
 
-    setIP(r3, "1", ip="10.10.102.2/24")
-    setIP(r3, "2", ip="10.10.101.2/24")
+    setIP(r3, "2", ip="10.10.102.2/24")
+    setIP(r3, "3", ip="10.10.101.2/24")
 
     info("*** Running CLI\n")
 

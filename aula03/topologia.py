@@ -30,7 +30,7 @@ def addRoute(host, src, dest):
 
 
 def setIP(host, if_number=None, ip=None):
-    if iface and ip:
+    if if_number and ip:
         host.cmd(f"ifconfig {host.name}-eth{if_number} {ip} up")
 
 

@@ -41,34 +41,49 @@ def topology(remote_controller):
 
     info("*** Adding stations/hosts\n")
 
-    h1A = net.addHost("h1A", ip="192.0.2.1/24")
-    h1B = net.addHost("h1B", ip="192.0.3.1/24")
-    h1C = net.addHost("h1C", ip="192.0.4.1/24")
+    h1A = net.addHost("h1A", ip="200.15.35.1/24")
+    h2A = net.addHost("h2A", ip="200.15.35.2/24")
+    r1A = net.addHost("r1A", ip="200.15.35.254/24")
 
-    r1 = net.addHost("r1", ip="192.0.2.254/24")
-    r2 = net.addHost("r2", ip="192.0.3.254/24")
-    r3 = net.addHost("r3", ip="192.0.4.254/24")
+    h1B = net.addHost("h1B", ip="198.98.99.65/27")
+    r2B = net.addHost("r2B", ip="198.98.99.94/27")
+
+    h1C = net.addHost("h1C", ip="200.57.59.1/24")
+    h2C = net.addHost("h2C", ip="200.57.59.2/24")
+    r3C = net.addHost("r3C", ip="200.57.59.254/24")
+
+    h1D = net.addHost("h1D", ip="198.98.99.33/27")
+    h2D = net.addHost("h2D", ip="198.98.99.34/27")
+    r4D = net.addHost("r4D", ip="198.98.99.62/27")
 
     info("*** Adding Switches (core)\n")
 
     switch1 = net.addSwitch("switch1")
     switch2 = net.addSwitch("switch2")
     switch3 = net.addSwitch("switch3")
+    switch4 = net.addSwitch("switch4")
 
     info("*** Creating links\n")
 
     net.addLink(h1A, switch1, bw=BW)
-    net.addLink(r1, switch1, bw=BW)
+    net.addLink(h2A, switch1, bw=BW)
+    net.addLink(r1A, switch1, bw=BW)
 
     net.addLink(h1B, switch2, bw=BW)
-    net.addLink(r2, switch2, bw=BW)
+    net.addLink(r2B, switch2, bw=BW)
 
     net.addLink(h1C, switch3, bw=BW)
-    net.addLink(r3, switch3, bw=BW)
+    net.addLink(h2C, switch3, bw=BW)
+    net.addLink(r3C, switch3, bw=BW)
 
-    net.addLink(r1, r2, bw=BW)
-    net.addLink(r1, r3, bw=BW)
-    net.addLink(r2, r3, bw=BW)
+    net.addLink(h1D, switch4, bw=BW)
+    net.addLink(h2D, switch4, bw=BW)
+    net.addLink(r4D, switch4, bw=BW)
+
+    net.addLink(r1A, r2B, bw=BW)
+    net.addLink(r1A, r3C, bw=BW)
+    net.addLink(r2B, r4D, bw=BW)
+    net.addLink(r3C, r4D, bw=BW)
 
     info("*** Starting network\n")
     net.start()
@@ -79,20 +94,49 @@ def topology(remote_controller):
     enableSwitch(switch1)
     enableSwitch(switch2)
     enableSwitch(switch3)
+    enableSwitch(switch4)
 
-    info("*** Setting addresses and routes")
+    info("*** Setting addresses\n")
 
-    addRoute(h1A, "default", "192.0.2.254")
-    addRoute(h1B, "default", "192.0.3.254")
-    addRoute(h1C, "default", "192.0.4.254")
+    addRoute(h1A, "default", "200.15.35.254")
+    addRoute(h2A, "default", "200.15.35.254")
+    addRoute(h1B, "default", "198.98.99.94")
+    addRoute(h1C, "default", "200.57.59.254")
+    addRoute(h2C, "default", "200.57.59.254")
+    addRoute(h1D, "default", "198.98.99.62")
+    addRoute(h2D, "default", "198.98.99.62")
 
-    setIP(r1, 2, ip="10.10.100.1/24")
-    setIP(r1, 3, ip="10.10.102.1/24")
-    setIP(r2, 2, ip="10.10.100.2/24")
-    setIP(r2, 3, ip="10.10.101.1/24")
+    setIP(r1A, 2, ip="200.1.2.1/30")
+    setIP(r2B, 2, ip="200.1.2.2/30")
 
-    setIP(r3, 2, ip="10.10.102.2/24")
-    setIP(r3, 3, ip="10.10.101.2/24")
+    setIP(r1A, 3, ip="200.1.2.5/30")
+    setIP(r3C, 2, ip="200.1.2.6/30")
+
+    setIP(r2B, 3, ip="200.1.2.9/30")
+    setIP(r4D, 2, ip="200.1.2.10/30")
+
+    setIP(r3C, 3, ip="200.1.2.13/30")
+    setIP(r4D, 3, ip="200.1.2.14/30")
+
+    info("*** Setting routes\n")
+    # Rede A e B
+    addRoute(r1A, "198.98.99.64/27", "200.1.2.2")
+    addRoute(r2B, "200.15.35.0/24", "200.1.2.1")
+    # Rede A e C
+    addRoute(r1A, "200.57.59.0/24", "200.1.2.6")
+    addRoute(r3C, "200.15.35.0/24", "200.1.2.5")
+    # Rede B e D
+    addRoute(r2B, "198.98.99.32/27", "200.1.2.10")
+    addRoute(r4D, "198.98.99.64/27", "200.1.2.9")
+    # Rede C e D
+    addRoute(r3C, "198.98.99.32/27", "200.1.2.14")
+    addRoute(r4D, "200.57.59.0/24", "200.1.2.13")
+    # Rede A e D
+    addRoute(r1A, "198.98.99.32/27", "200.1.2.2")
+    addRoute(r4D, "200.15.35.0/24", "200.1.2.9")
+    # Rede B e C
+    addRoute(r3C, "198.98.99.64/27", "200.1.2.5")
+    addRoute(r2B, "200.57.59.0/24", "200.1.2.1")
 
     info("*** Running CLI\n")
 

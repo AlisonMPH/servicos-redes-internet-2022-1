@@ -62,6 +62,7 @@ def topology():
     h4 = net.addHost("h4", ip="0.0.0.0")
     h5 = net.addHost("h5", ip="0.0.0.0")
     h6 = net.addHost("h6", ip="0.0.0.0")
+    h7 = net.addHost("h7", ip="0.0.0.0")
     
     # Roteadores
     dhcpsrv = net.addHost("dhcpsrv", ip="192.168.0.10/24")
@@ -78,6 +79,7 @@ def topology():
     net.addLink(h4, switch1, bw=BW)
     net.addLink(h5, switch1, bw=BW)
     net.addLink(h6, switch1, bw=BW)
+    net.addLink(h7, switch1, bw=BW)
     net.addLink(dhcpsrv, switch1, bw=BW)
 
     info("*** Starting network\n")
@@ -97,6 +99,7 @@ def topology():
     run_dhcp_client(h4)
     run_dhcp_client(h5)
     run_dhcp_client(h6)
+    run_dhcp_client(h7)
 
     info("*** Running CLI\n")
 
@@ -122,7 +125,7 @@ def cleanup():
     os.system("cp -rvf conf/ /tmp/quagga")
     os.system("cp -rvf conf/ /tmp/dhcpd")
     os.system("chmod 777 /tmp/quagga -R")
-    os.system("chmod 777 /tmp/dhcp -R")
+    os.system("chmod 777 /tmp/dhcpd -R")
     os.system("echo 'hostname zebra' > /etc/quagga/zebra.conf")
     os.system("chmod 777 /etc/quagga/zebra.conf")
 
